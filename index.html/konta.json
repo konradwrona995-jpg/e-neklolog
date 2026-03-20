@@ -1,0 +1,12 @@
+[
+    {
+        "login": "szef",
+        "haslo": "szef123",
+        "rola": "superadmin"
+    },
+    {
+        "login": "TestowyZaklad",
+        "haslo": "test",
+        "rola": "zaklad"
+    }
+]
