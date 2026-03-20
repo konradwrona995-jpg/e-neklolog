@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maciek Z dresscode - Dom Pogrzebowy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- ZMIENNE KOLORYSTYCZNE --- */
+        :root {
+            --bg-color: #fbfbfb;
+            --text-main: #222222;
+            --text-muted: #666666;
+            --accent-color: #6e3b4f;
+            --border-color: #e0e0e0;
+        }
+
+        /* --- STYLE GLOBALNE --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, .serif {
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+        }
+
+        /* --- MENU GŁÓWNE --- */
+        .main-menu {
+            background-color: var(--text-main);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .main-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .main-menu a {
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+        .main-menu a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- NAGŁÓWEK / HERO --- */
+        .hero {
+            background-color: #4a5568; 
+            background-size: cover;
+            background-position: center;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+            box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.4);
+        }
+
+        /* --- KONTENER GŁÓWNY --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* --- WIDOK SZCZEGÓŁOWY NEKROLOGU --- */
+        .obituary-detail {
+            background: white;
+            padding: 50px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .memorial-graphics-lg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+        
+        .css-cross.lg {
+            position: relative;
+            width: 16px;
+            height: 90px;
+            background-color: var(--text-main);
+        }
+        .css-cross.lg::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: -22px;
+            width: 60px;
+            height: 16px;
+            background-color: var(--text-main);
+        }
+
+        .photo-frame.lg {
+            width: 140px;
+            height: 180px;
+            border: 6px solid var(--text-main);
+            padding: 3px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.9rem;
+            outline: 1px solid #ccc;
+            outline-offset: -2px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .obituary-detail h2 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+        }
+
+        .obituary-detail .dates {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 40px 0;
+            color: var(--accent-color);
+            font-size: 1.2rem;
+        }
+        .divider::before, .divider::after {
+            content: "";
+            display: inline-block;
+            width: 100px;
+            height: 1px;
+            background-color: var(--accent-color);
+            vertical-align: middle;
+            margin: 0 15px;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+            font-size: 1.05rem;
+            line-height: 2;
+        }
+        .info-list strong {
+            font-weight: 700;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-main);
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .btn-outline:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+            background-color: #fafafa;
+        }
+
+        .map-container {
+            margin: 30px 0;
+            width: 100%;
+            height: 350px;
+            background-color: #eee;
+        }
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* --- KONDOLENCJE --- */
+        .condolences-section {
+            margin-top: 50px;
+            text-align: center;
+            background-color: #fafafa;
+            padding: 40px;
+            border: 1px solid var(--border-color);
+        }
+        .condolences-section h3 {
+            font-size: 1.8rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        
+        .comment-form {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 600px;
+            margin: 20px auto 30px;
+            text-align: left;
+        }
+        .comment-form.active {
+            display: flex;
+        }
+        .comment-form input, .comment-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            font-family: 'Lato', sans-serif;
+            box-sizing: border-box;
+            background: white;
+        }
+        .comment-form textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .condolence-comment {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid var(--border-color);
+            text-align: left;
+            border-left: 4px solid var(--accent-color);
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .condolence-comment-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .btn-filled {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-family: inherit;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-filled:hover {
+            background-color: #552d3d;
+        }
+
+        /* --- MODAL / POPUPS --- */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 2000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.5); 
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .close-modal {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-modal:hover,
+        .close-modal:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="main-menu">
+        <ul>
+            <li><a href="index.html">Strona Główna</a></li>
+            <li><a href="#">O nas</a></li>
+            <li><a href="#">Usługi pogrzebowe</a></li>
+            <li><a href="nekrologi.html">Nekrologi</a></li>
+            <li><a href="#">Kontakt</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+    </header>
+
+    <div class="container">
+        <section class="obituary-detail">
+            
+            <div class="memorial-graphics-lg">
+                <div class="css-cross lg" style=""></div>
+                <img class="photo-frame lg" src="uploads/foto_1774004734_9309.webp" alt="Zdjęcie zmarłego" style="object-fit:cover;">
+            </div>
+            
+            <h2>Maciek Z dresscode</h2>
+            <p class="dates">21.37.2024 - 13.57.3000<br>Wiek: 67 lat</p>
+
+            <div class="divider">♦</div>
+
+            <ul class="info-list">
+                <li><strong>Data pogrzebu:</strong> 14.03.2026</li>
+                <li><strong>Msza Święta:</strong> 23.03.2026 9:00, Bazylika najświętszej maryi panny anielskiej w dąbrowie górniczej Królowej Jadwigi 17, 41-300 Dąbrowa Górnicza</li>
+                <li><strong>Wyprowadzenie do grobu o godz.</strong> 11:00</li>
+                <li><strong>Cmentarz:</strong> Cmentarz, PWNMP Anielskiej W dąbrowie górniczej</li>
+            </ul>
+
+            <div style="display: flex; gap: 15px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap;">
+                <button id="btn-share" class="btn-outline">Udostępnij nekrolog</button>
+                <button id="btn-flowers" class="btn-outline">Zamów kwiaty</button>
+            </div>
+
+            <div class="map-container">
+                <iframe src="https://maps.google.com/maps?q=Bazylika+naj%C5%9Bwi%C4%99tszej+maryi+panny+anielskiej+w+d%C4%85browie+g%C3%B3rniczej+Kr%C3%B3lowej+Jadwigi+17%2C+41-300+D%C4%85browa+G%C3%B3rnicza&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" frameborder="0" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+            <div class="divider">♦</div>
+
+            <div class="condolences-section" id="kondolencje">
+                <h3 class="serif">Kondolencje</h3>
+                <button class="btn-outline" id="toggle-comment-form" style="background: white;">+ Dodaj kondolencje</button>
+
+                <!-- Comment Form -->
+                <form id="comment-form" class="comment-form">
+                    <input type="text" id="comment-author" placeholder="Twoje imię i nazwisko" required>
+                    <textarea id="comment-text" placeholder="Treść kondolencji..." required></textarea>
+                    <button type="submit" class="btn-filled">Wyślij kondolencje</button>
+                </form>
+
+                <div id="comments-container">
+                    <!-- Default comment -->
+                    <div class="condolence-comment">
+                        <div class="condolence-comment-header">
+                            <span>👤 Krystyna</span>
+                            <span>⏱ 8 dni temu</span>
+                        </div>
+                        <p>Wyrazy współczucia dla całej rodziny składa rodzina z Dąbrowa Górnicza.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-share" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-share">&times;</span>
+            <h3 class="serif">Udostępnij nekrolog</h3>
+            <p style="margin-bottom:15px;">Skopiuj poniższy link i wyślij go rodzinie lub znajomym.</p>
+            <input type="text" id="share-link-input" readonly style="width:100%; padding:10px; box-sizing:border-box; border:1px solid #ccc; margin-bottom:15px; text-align:center;">
+            <button id="btn-copy-link" class="btn-filled" style="width:100%;">Skopiuj link</button>
+        </div>
+    </div>
+
+    <div id="modal-flowers" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-flowers">&times;</span>
+            <h3 class="serif">Zamów kwiaty</h3>
+            <p>Zadzwoń do naszej kwiaciarni, aby zamówić wieniec lub wiązankę z bezpłatną dostawą na ceremonię pogrzebową:</p>
+            <h2 style="color: var(--accent-color); font-size: 2rem; margin: 20px 0;">📞 +48 123 456 789</h2>
+        </div>
+    </div>
+
+    <script>
+        // Toggle comment form visibility
+        document.getElementById('toggle-comment-form').addEventListener('click', function(e) {
+            e.preventDefault();
+            const form = document.getElementById('comment-form');
+            form.classList.toggle('active');
+            if (form.classList.contains('active')) {
+                this.innerHTML = '- Anuluj dodawanie';
+            } else {
+                this.innerHTML = '+ Dodaj kondolencje';
+            }
+        });
+
+        const OBITUARY_ID = '1774004734';
+
+        function loadComments() {
+            if (OBITUARY_ID === '{{I' + 'D_NEKROLOGU}}') return; // Not deployed
+            fetch('http://localhost/nekrologi_system/api_komentarze.php?action=load&id=' + OBITUARY_ID)
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('comments-container');
+                container.innerHTML = '';
+                if (data.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; color:#888;">Brak kondolencji. Bądź pierwszą osobą, która złoży wyrazy współczucia.</p>';
+                }
+                data.forEach(comment => {
+                    const commentDiv = document.createElement('div');
+                    commentDiv.className = 'condolence-comment';
+                    commentDiv.innerHTML = `
+                        <div class="condolence-comment-header">
+                            <span>👤 ${comment.author}</span>
+                            <span>⏱ ${comment.date}</span>
+                        </div>
+                        <p>${comment.text}</p>
+                    `;
+                    container.appendChild(commentDiv);
+                });
+            });
+        }
+        loadComments();
+
+        // Handle comment submission
+        document.getElementById('comment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const author = document.getElementById('comment-author').value;
+            const text = document.getElementById('comment-text').value;
+
+            if (OBITUARY_ID !== '{{I' + 'D_NEKROLOGU}}') {
+                const btn = this.querySelector('button[type="submit"]');
+                btn.innerHTML = 'Wysyłanie...';
+                fetch('http://localhost/nekrologi_system/api_komentarze.php?action=add&id=' + OBITUARY_ID, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ author: author, text: text })
+                }).then(() => {
+                    loadComments();
+                    btn.innerHTML = 'Wyślij kondolencje';
+                });
+            }
+
+            // Reset form and hide it
+            this.reset();
+            this.classList.remove('active');
+            document.getElementById('toggle-comment-form').innerHTML = '+ Dodaj kondolencje';
+        });
+
+        // Modal Logic
+        const modalShare = document.getElementById('modal-share');
+        const modalFlowers = document.getElementById('modal-flowers');
+        
+        document.getElementById('btn-share').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('share-link-input').value = window.location.href;
+            modalShare.classList.add('active');
+        });
+
+        document.getElementById('btn-flowers').addEventListener('click', function(e) {
+            e.preventDefault();
+            modalFlowers.classList.add('active');
+        });
+
+        document.getElementById('close-share').addEventListener('click', () => modalShare.classList.remove('active'));
+        document.getElementById('close-flowers').addEventListener('click', () => modalFlowers.classList.remove('active'));
+
+        document.getElementById('btn-copy-link').addEventListener('click', function() {
+            const linkInput = document.getElementById('share-link-input');
+            linkInput.select();
+            linkInput.setSelectionRange(0, 99999); // Mobile
+            navigator.clipboard.writeText(linkInput.value);
+            const originalText = this.innerHTML;
+            this.innerHTML = "Skopiowano!";
+            setTimeout(() => this.innerHTML = originalText, 2000);
+        });
+
+        // Close on outside click
+        window.addEventListener('click', function(e) {
+            if (e.target == modalShare) modalShare.classList.remove('active');
+            if (e.target == modalFlowers) modalFlowers.classList.remove('active');
+        });
+    </script>
+</body>
+</html>

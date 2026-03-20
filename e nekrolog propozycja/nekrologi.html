@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Nekrologów - Dom Pogrzebowy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- ZMIENNE KOLORYSTYCZNE --- */
+        :root {
+            --bg-color: #fbfbfb;
+            --text-main: #222222;
+            --text-muted: #666666;
+            --accent-color: #6e3b4f;
+            --border-color: #e0e0e0;
+        }
+
+        /* --- STYLE GLOBALNE --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, .serif {
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+        }
+
+        /* --- MENU GŁÓWNE --- */
+        .main-menu {
+            background-color: var(--text-main);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .main-menu ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .main-menu a {
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+        .main-menu a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- NAGŁÓWEK / HERO --- */
+        .hero {
+            background-color: #4a5568; 
+            background-size: cover;
+            background-position: center;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+            box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.4);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        /* --- KONTENER GŁÓWNY --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            flex: 1;
+        }
+
+        /* --- WYSZUKIWARKA --- */
+        .search-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .search-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        .search-input {
+            padding: 10px 15px;
+            width: 300px;
+            border: 1px solid var(--border-color);
+            font-family: 'Lato', sans-serif;
+        }
+        .search-btn {
+            padding: 11px 25px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: 'Lato', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.3s;
+            text-decoration: none;
+        }
+        .search-btn:hover {
+            background-color: #552d3d;
+        }
+
+        /* --- GALERIA NEKROLOGÓW (GRID) --- */
+        .obituary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        @media (max-width: 900px) {
+            .obituary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .obituary-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .obituary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+        }
+
+        .ribbon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-top: 50px solid black;
+            border-right: 50px solid transparent;
+        }
+
+        /* --- KRZYŻ I RAMKA ZDJĘCIA --- */
+        .memorial-graphics {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .css-cross {
+            position: relative;
+            width: 12px;
+            height: 60px;
+            background-color: var(--text-main);
+            margin: 0 auto;
+        }
+        .css-cross::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: -14px;
+            width: 40px;
+            height: 12px;
+            background-color: var(--text-main);
+        }
+
+        .photo-frame {
+            width: 100px;
+            height: 130px;
+            border: 4px solid var(--text-main);
+            padding: 2px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.8rem;
+            outline: 1px solid #ccc;
+            outline-offset: -2px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 0 auto;
+        }
+
+        .obituary-card h3 {
+            font-size: 1.3rem;
+            margin: 10px 0;
+            color: var(--text-main);
+            text-transform: uppercase;
+        }
+
+        .obituary-card p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .card-buttons {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            padding: 8px 15px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-main);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .btn-outline:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="main-menu">
+        <ul>
+            <li><a href="index.html">Strona Główna</a></li>
+            <li><a href="#">O nas</a></li>
+            <li><a href="#">Usługi pogrzebowe</a></li>
+            <li><a href="nekrologi.html">Nekrologi</a></li>
+            <li><a href="#">Kontakt</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1>Nekrologi</h1>
+    </header>
+
+    <div class="container">
+        
+        <section class="search-section">
+            <h2 class="serif">Szukaj nekrologu</h2>
+            <form action="#" method="GET" style="display: flex; justify-content: center;" id="search-form">
+                <input type="text" id="search-input" class="search-input" placeholder="Imię i nazwisko...">
+                <button type="submit" class="search-btn">Szukaj</button>
+            </form>
+        </section>
+
+        <section class="obituary-grid" id="obituary-grid">
+
+            <div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross" style=""></div>
+                    <img class="photo-frame" src="uploads/foto_1774008387_2565.png" alt="Zdjęcie zmarłego" style="object-fit:cover;">
+                </div>
+                <h3>Bibzqi Szef</h3>
+                <p>321.32.212312 - 123.3123.31323123</p>
+                <p>Wiek: 230000 lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: 23.323.123124</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-1774008387.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-1774008387.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+
+
+            <div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross" style="transform: scale(1.5); margin: 30px auto;"></div>
+                    
+                </div>
+                <h3>daniel magical</h3>
+                <p>dw - dwdwd</p>
+                <p>Wiek: ddw lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: dwd</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-1774006620.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-1774006620.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+
+
+            <div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross" style="transform: scale(1.5); margin: 30px auto;"></div>
+                    
+                </div>
+                <h3>bibibibbi</h3>
+                <p>fe - ffefe</p>
+                <p>Wiek: f lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: efef</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-1774006459.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-1774006459.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+
+
+            <div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross" style="transform: scale(1.5); margin: 30px auto;"></div>
+                    
+                </div>
+                <h3>mikusssigmarel</h3>
+                <p>dwd - dwd</p>
+                <p>Wiek: dw lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: dwd</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-1774006145.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-1774006145.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+
+
+            
+<div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross" style=""></div>
+                    <img class="photo-frame" src="uploads/foto_1774004734_9309.webp" alt="Zdjęcie zmarłego" style="object-fit:cover;">
+                </div>
+                <h3>Maciek Z dresscode</h3>
+                <p>21.37.2024 - 13.57.3000</p>
+                <p>Wiek: 67 lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: gr</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-1774004734.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-1774004734.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+
+
+
+            
+<div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross" style="transform: scale(1.5); margin: 30px auto;"></div>
+                    
+                </div>
+                <h3>Maciek Zander</h3>
+                <p>21.37.2024 - 13.57.3000</p>
+                <p>Wiek: 23 lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: 45.67.2306</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-1774004669.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-1774004669.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+
+
+
+            <div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross" style="transform: scale(1.5); margin: 30px auto;"></div>
+                    <img class="photo-frame" src="uploads/foto_1774003720_3222.webp" alt="Zdjęcie zmarłego" style="object-fit:cover;">
+                </div>
+                <h3>grg</h3>
+                <p>gr - ggrg</p>
+                <p>Wiek: rg lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: gr</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-1774003672.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-1774003672.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+
+            <div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross"></div>
+                    <img class="photo-frame" src="uploads/foto_1774003276_8542.jpg" alt="Zdjęcie zmarłego" style="object-fit:cover;">
+                </div>
+                <h3>bibibibi</h3>
+                <p>bibibibi - bibibibi</p>
+                <p>Wiek: bibibibi lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: bibibibi pi</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-1774003276.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-1774003276.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+            <div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross" style="transform: scale(1.5); margin: 30px auto;"></div>
+                </div>
+                <h3>Błażej Pospolity</h3>
+                <p>20.02.1981 - 20.03.2026</p>
+                <p>Wiek: 45 lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: 23.03.2026</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-1774001672.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-1774001672.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+
+            <div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross"></div>
+                    <div class="photo-frame">Zdjęcie zmarłego</div>
+                </div>
+                <h3>mikusssigmarel</h3>
+                <p>21.37.2024 - 13.57.3000</p>
+                <p>Wiek: 67 lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: 45.67.2306</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-1774000999.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-1774000999.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+
+            
+            <div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross"></div>
+                    <div class="photo-frame">Zdjęcie zmarłego</div>
+                </div>
+                <h3>ŚP. MICHAŁ WÓJCIK</h3>
+                <p>27.09.1947 - 10.03.2026</p>
+                <p>Wiek: 78 lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: 14.03.2026</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-michal.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-michal.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+
+            <div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross"></div>
+                    <div class="photo-frame">Zdjęcie zmarłego</div>
+                </div>
+                <h3>ŚP. JOLANTA NOWAK</h3>
+                <p>25.04.1938 - 07.03.2026</p>
+                <p>Wiek: 88 lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: 14.03.2026</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-jolanta.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-jolanta.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+
+            <div class="obituary-card">
+                <div class="ribbon"></div>
+                <div class="memorial-graphics">
+                    <div class="css-cross"></div>
+                    <div class="photo-frame">Zdjęcie zmarłego</div>
+                </div>
+                <h3>ŚP. BOGUSŁAWA MŁODZIENIEWSKA</h3>
+                <p>20.02.1980 - 15.03.2026</p>
+                <p>Wiek: 46 lat</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">Data pogrzebu: 19.03.2026</p>
+                <div class="card-buttons">
+                    <a href="nekrolog-boguslawa.html" class="btn-outline">Więcej informacji</a>
+                    <a href="nekrolog-boguslawa.html#kondolencje" class="btn-outline">Złóż kondolencje</a>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer style="text-align: center; padding: 20px; background: var(--text-main); color: white; margin-top: auto; font-size: 0.9rem;">
+        strona poglądowa stworzona na potrzeby wizualizacji przez DiM
+    </footer>
+
+    <script>
+        document.getElementById('search-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            filterObituaries();
+        });
+
+        // Also allow live search as the user types
+        document.getElementById('search-input').addEventListener('input', function() {
+            filterObituaries();
+        });
+
+        function filterObituaries() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const cards = document.querySelectorAll('.obituary-card');
+            
+            cards.forEach(card => {
+                const nameText = card.querySelector('h3').textContent.toLowerCase();
+                if (nameText.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
